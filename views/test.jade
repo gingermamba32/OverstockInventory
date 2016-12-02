@@ -1,0 +1,360 @@
+extends layout
+
+block content
+
+
+
+
+
+    form(role='form', method="Post", action="/radioSearch", name="Length18", style="width:90%; margin: 0 auto; padding-bottom: 50px;")
+     p(style="padding-top:0px; padding-bottom: 0px;") step 1 - length
+     label.radio-inline 
+      input(type="radio", value="14", name="length")
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 14"
+     label.radio-inline 
+      input(type="radio", value="18", name="length" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 18"
+     label.radio-inline 
+      input(type="radio", value="22", name="length" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 22"
+     br
+     br
+     br
+     br
+     p Step 2 - type
+     label.radio-inline 
+      input(type="radio", value="S-TAPE", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") S-TAPE
+     label.radio-inline 
+      input(type="radio", value="SI", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") SI
+     label.radio-inline 
+      input(type="radio", value="IBODY", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 22px;") IBODY
+     label.radio-inline 
+      input(type="radio", value="ICURLY", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 22px;") ICURLY
+     label.radio-inline 
+      input(type="radio", value="KLS", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") KLS
+     label.radio-inline 
+      input(type="radio", value="KBODY", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 22px;") KBODY
+     label.radio-inline 
+      input(type="radio", value="KCURLY", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 22px;") KCULRY
+     label.radio-inline 
+      input(type="radio", value="other", name="type" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") OTHER
+     br
+     br
+     br
+     br
+     p Step 3 - color
+     label.radio-inline 
+      input(type="radio", value="1", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 1
+     label.radio-inline 
+      input(type="radio", value="10", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 10
+     label.radio-inline 
+      input(type="radio", value="1001", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 1001
+     label.radio-inline 
+      input(type="radio", value="12/600", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 12/600
+     label.radio-inline 
+      input(type="radio", value="1B", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 1B
+     label.radio-inline 
+      input(type="radio", value="2", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 2
+     br
+     br
+     br
+     label.radio-inline 
+      input(type="radio", value="24", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 24
+     label.radio-inline 
+      input(type="radio", value="27", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 27
+     label.radio-inline 
+      input(type="radio", value="27/613", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 27/613
+     label.radio-inline 
+      input(type="radio", value="27A", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 27A
+     label.radio-inline 
+      input(type="radio", value="30/33", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 30/33
+     label.radio-inline 
+      input(type="radio", value="3R", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 3R
+     br
+     br
+     br
+     label.radio-inline 
+      input(type="radio", value="4", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 4
+     label.radio-inline 
+      input(type="radio", value="5B", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 5B
+     label.radio-inline 
+      input(type="radio", value="5R", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 5R
+     label.radio-inline 
+      input(type="radio", value="6", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 6
+     label.radio-inline 
+      input(type="radio", value="60", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 60
+     label.radio-inline 
+      input(type="radio", value="600", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 600
+     br
+     br
+     br
+     label.radio-inline 
+      input(type="radio", value="613", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 613
+     label.radio-inline 
+      input(type="radio", value="8", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") 8
+     label.radio-inline 
+      input(type="radio", value="BLUE", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") BLUE
+     label.radio-inline 
+      input(type="radio", value="BURG", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") BURG
+     label.radio-inline 
+      input(type="radio", value="DKFXA", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") DKFXA
+     label.radio-inline 
+      input(type="radio", value="DKPURP", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") DKPURP
+     br
+     br
+     br
+     label.radio-inline 
+      input(type="radio", value="FUNKY", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") FUNKY
+     label.radio-inline 
+      input(type="radio", value="O-12_600", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") O-12_600
+     label.radio-inline 
+      input(type="radio", value="O-1B_6", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") O-1B_6
+     label.radio-inline 
+      input(type="radio", value="O-4_613", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") O-4_613
+     label.radio-inline 
+      input(type="radio", value="PINK", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") PINK
+     label.radio-inline 
+      input(type="radio", value="PURP", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") PURP
+     br
+     br
+     br
+     label.radio-inline 
+      input(type="radio", value="RED", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") RED
+     label.radio-inline 
+      input(type="radio", value="TEAL", name="color" )
+      p(style="padding-left: 23px; padding-top: 0px; font-size: 17px;") TEAL
+
+
+
+     button(type="submit", style="font-size:35px;") Search ProductID
+
+
+    form(role='form', method="Post", action="/radioSearch", name="SearchRadio", style="width:50%; margin: 0 auto; padding-bottom: 50px;")
+     .btn-group(data-toggle='buttons-radio', style="margin: 0 auto; text-align: center")
+      h6 Choose Length
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="14", name="length", style="display:none;")
+        |  14"
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="18", name="length", style="display:none;")
+        |  18"
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="22", name="length", style="display:none;")
+        |  22"
+      br
+      br
+      h6 Choose Type
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="S-TAPE", name="type", style="display:none;")
+        |  S-TAPE
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="SI", name="type", style="display:none;")
+        |  SI
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="IBODY", name="type", style="display:none;")
+        |  IBODY
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="ICURLY", name="type", style="display:none;")
+        |  ICURLY
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="KLS", name="type", style="display:none;")
+        |  KLS
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="KBODY", name="type", style="display:none;")
+        |  KBODY
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="KCURLY", name="type", style="display:none;")
+        |  KCURLY
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="OTHER", name="type", style="display:none;")
+        |  OTHER
+      br
+      br
+      h6 Choose Color
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="1", name="color", style="display:none;")
+        |  1
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="10", name="color", style="display:none;")
+        |  10
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="1001", name="color", style="display:none;")
+        |  1001
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="12/600", name="color", style="display:none;")
+        |  12/600
+      br
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="1B", name="color", style="display:none;")
+        |  1B
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="2", name="color", style="display:none;")
+        |  2
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="24", name="color", style="display:none;")
+        |  24
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="27", name="color", style="display:none;")
+        |  27
+      br
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="27/613", name="color", style="display:none;")
+        |  27/613
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="27A", name="color", style="display:none;")
+        |  27A
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="30/33", name="color", style="display:none;")
+        |  30/33
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="3R", name="color", style="display:none;")
+        |  3R
+      br
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="4", name="color", style="display:none;")
+        |  4
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="5B", name="color", style="display:none;")
+        |  5B
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="5R", name="color", style="display:none;")
+        |  5R
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="6", name="color", style="display:none;")
+        |  6
+      br
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="27/613", name="color", style="display:none;")
+        |  27/613
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="27A", name="color", style="display:none;")
+        |  27A
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="30/33", name="color", style="display:none;")
+        |  30/33
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="3R", name="color", style="display:none;")
+        |  3R
+      br
+      br
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="4", name="color", style="display:none;")
+        |  4
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="5B", name="color", style="display:none;")
+        |  5B
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="5R", name="color", style="display:none;")
+        |  5R
+      label.btn.btn-primary(style="font-size:20px;")
+        input(type='radio', value="6", name="color", style="display:none;")
+        |  6
+
+     button(type="submit", style="font-size:25px;") Search ProductID
+
+
+    div(style="margin: 0 auto; width: 80%;")
+      form(style="margin:0 auto;")
+        label(for='option1')
+          input#option1(type='radio', name='radiotest', value='option1')
+          |      Option 1
+        label(for='option2')
+          input#option2(type='radio', name='radiotest', value='option2')
+          |      Option 2
+        label(for='option3')
+          input#option3(type='radio', name='radiotest', value='option3')
+          |      Option 3
+        label(for='option4')
+          input#option4(type='radio', name='radiotest', value='option4')
+          |      Option 4
+        hr
+        label(for='c1')
+          input#c1(type='checkbox', name='cc')
+          |      Checkbox 1
+        label(for='c2')
+          input#c2(type='checkbox', name='cc')
+          |      Checkbox 2
+        label(for='c3')
+          input#c3(type='checkbox', name='cc')
+          |      Checkbox 3
+        label(for='c4')
+          input#c4(type='checkbox', name='cc')
+          |      Checkbox 4
+  form(method="Post", action="/query", name="DBQuery", style="padding-bottom:50px;")
+   button.search.btn(type="submit", style="font-size:25px;") Search
+   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black; padding-bottom: 35px;")
+    tr(style="margin: 0 auto; background: #52bab3;")
+     td #[b UPC]
+     td #[a(data-toggle="modal" data-target="#myModal", style="text-decoration:none; cursor: pointer; color:black; font-weight: 600;") DESCRIPTION]
+     td #[b LOCATION]
+     td #[b QUANTITY]
+     td #[b PO#]
+    tr
+     td
+      input.form-control.upc(type="radio", placeholder="barcode", size="12", name="barcode", style="font-size: 13px;padding:0px; margin:0px; height:50px;text-align:center;")
+     td
+      input.form-control.location(type="radio", placeholder="description", size="12", name="description", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.location(type="radio", placeholder="location", size="12", name="location", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.quantity(type="radio", placeholder="qty", size="12", name="qty", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.poNum(type="radio", placeholder="po", size="12", name="po", style="font-size: 13px;padding:0px; margin:0px;height:50px; text-align:center;")
+
+
+
+    //- table
+    //-  if (nums.length)
+    //-   each post, i in nums
+    //-    tr
+    //-     td= post.upc
+    //-     td= post.description
+    //-     td= post.location 
+    //-     td= post.quantity
+    //-     td= post.shipment
+    //-     td #[a(href="/updateproduct/#{post.id}") Update]
+    //-     td #[a(href="/deleteuser/#{post.id}", onclick="return warningList();") Delete]

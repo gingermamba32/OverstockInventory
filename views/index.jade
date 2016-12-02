@@ -1,5 +1,196 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  
+  h1(id="header", style="padding-top: 75px;") Scan Inventory
+
+  h5(style="color:red;")=success
+
+  div.inputFields(style="background:#D0D0D0; width:90%; margin:80px auto; padding-top:20px; padding-bottom:50px; border-radius: 8px;")
+   h2(style="text-align:center; padding-bottom: 10px;")=error
+   div(style="float:right; margin-top: 0.35%; padding-right: 10px;")
+    //- button.btn.btn-warning(onclick="myDeleteFunction()", style="font-size: 40px; background-color:red; color:white; border: 1px solid;") &#8593;
+    //- br
+    //- button.btn.btn-warning(onclick="myCreateFunction()", style="font-size: 40px; background-color:green; color: white; border: 1px solid #ddd;") &#8595;
+
+   form(role='form', method="Post", action="/locateThree", name="ProductQuantity")
+    table.table-striped.table-bordered.table-responsive#myTable(width="80%", align="center", style="font-size:18px;border-collapse:collapse" )
+     tr
+      td(style="width:50%;")
+       input.form-control.scanner(type="text", required, id="loc", placeholder="LOCATION", name="bin11", size="18")
+      td
+       input.form-control.scanner(type="number", required, id="loc", placeholder="PO", name="shipment", size="10")
+     tr
+      td
+       input.form-control.scanner(type="text", required, id="upc", placeholder="UPC #1",  name="upc1", size="10")
+      td
+       input.form-control.quan.scanner(type="number", required, placeholder="QUANTITY #1",  name="quantity1", size="10")
+     tr
+      td
+       input.form-control.scanner#check2(type="text", placeholder="UPC #2",  name="upc2", size="10")
+      td
+       input.form-control.quan.scanner#quan2(type="number", placeholder="QUANTITY #2",  name="quantity2", size="10")
+     tr
+      td
+       input.form-control.scanner#check3(type="text", placeholder="UPC #3",  name="upc3", size="10")
+      td
+       input.form-control.quan.scanner#quan3(type="number", placeholder="QUANTITY #3",  name="quantity3", size="10")
+     tr
+      td
+       input.form-control.scanner#check4(type="text", placeholder="UPC #4",  name="upc4", size="10")
+      td
+       input.form-control.quan.scanner#quan4(type="number", placeholder="QUANTITY #4",  name="quantity4", size="10")
+     tr
+      td
+       input.form-control.scanner#check5(type="text", placeholder="UPC #5",  name="upc5", size="10")
+      td
+       input.form-control.quan.scanner#quan5(type="number", placeholder="QUANTITY #5",  name="quantity5", size="10")
+     tr
+      td
+       input.form-control.scanner#check6(type="text", placeholder="UPC #6",  name="upc6", size="10")
+      td
+       input.form-control.quan.scanner#quan6(type="number", placeholder="QUANTITY #6",  name="quantity6", size="10")
+     tr
+      td
+       input.form-control.scanner#check7(type="text", placeholder="UPC #7",  name="upc7", size="10")
+      td
+       input.form-control.quan.scanner#quan7(type="number", placeholder="QUANTITY #7",  name="quantity7", size="10")
+     tr
+      td
+       input.form-control.scanner#check8(type="text", placeholder="UPC #8",  name="upc8", size="10")
+      td
+       input.form-control.quan.scanner#quan8(type="number", placeholder="QUANTITY #8",  name="quantity8", size="10")
+    button.btn.invSub(type="submit", onclick="return checker();", style="font-size:35px;") Submit
+ 
+
+     
+
+  script.
+    $(document).ready(function() {
+
+    	$('input[name=bin11]').click().focus();
+
+      //- success message
+
+       $('.mess').hide();
+
+       $('.invSub').bind('click', function(){
+           window.scrollTo(0,0);
+           $('.mess').show(200).delay(4000).hide(200);
+       }); 
+
+
+          //- Press enter on quantities to submit to inventory
+        $('.quan').keypress(function (e){
+       	 if(e.which == 13){
+         $('.invSub').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+       	})
+
+
+
+        $('input[name=type]').attr('checked',false);
+        $('input[name=length]').attr('checked',false);
+        $('input[name=color]').attr('checked',false);
+
+
+         //- function checker(){
+         //-        if ($('.check').val() != ''){
+         //-          console.log($('.check').val());
+         //-          $('.quan').prop('required',true);
+         //-          }
+
+         //-      }
+
+    });
+
+            function checker(){
+                if ($('#check2').val() != ''){
+                  console.log($('#check2').val());
+                  $('#quan2').prop('required',true);
+                  }
+                if ($('#check3').val() != ''){
+                  console.log($('#check3').val());
+                  $('#quan3').prop('required',true);
+                  }
+                if ($('#check4').val() != ''){
+                  console.log($('#check4').val());
+                  $('#quan4').prop('required',true);
+                  }
+                if ($('#check5').val() != ''){
+                  console.log($('#check5').val());
+                  $('#quan5').prop('required',true);
+                  }
+                if ($('#check6').val() != ''){
+                  console.log($('#check6').val());
+                  $('#quan6').prop('required',true);
+                  }
+                if ($('#check7').val() != ''){
+                  console.log($('#check7').val());
+                  $('#quan7').prop('required',true);
+                  }
+                if ($('#check8').val() != ''){
+                  console.log($('#check8').val());
+                  $('#quan8').prop('required',true);
+                  }
+                 
+              }
+
+    //-     function addRow(tableID) {
+    //- //debugger;
+    //-  var tableID="tableCreate";
+    //-  var table = document.getElementById(tableID);
+    //-  var rowCount = table.rows.length;
+
+    //- if(rowCount<7){
+   
+    //-     var row = table.insertRow(rowCount);
+    //-     var cell1 = row.insertCell(0);        
+    //-     var cell2 = row.insertCell(1);
+    //-     var cell3 = row.insertCell(2);
+    //-     var element2 = document.createElement('input');
+    //-     element2.type="text";
+    //-     cell2.appendChild(element2);
+
+    //-        }
+    //-    }
+
+    //-   function removeRow(){
+    //-       var tableID="tableCreate";
+    //-       var table = document.getElementById(tableID);
+    //-       var rowCount = table.rows.length;
+
+    //-       if(rowCount>1){            
+    //-           table.deleteRow(-1);
+    //-       }
+    //-   }
+      //- function myCreateFunction() {
+      //- var table = document.getElementById("myTable");
+      //- var count = table.rows.length;  //how many rows to allow
+
+      //-   if (count < 11) {
+      //-     var row = table.insertRow(-1);
+      //-     var cell1 = row.insertCell(0);
+      //-     var cell2 = row.insertCell(1);
+      //-     cell1.style.backgroundColor = '#D0D0D0'
+      //-     cell1.innerHTML = '<input class="form-control" type="text" placeholder="UPC" size="10" name="upcArray" style="font-size: 13px;padding:0px; margin:0px; text-align:center; height:50px;" />';
+      //-     cell2.innerHTML = '<input class="form-control quan" type="number" placeholder="QUANTITY" size="10" name="quantityArray" style="font-size: 13px;padding:0px; margin:0px; text-align:center; height:50px;" />';
+      //-     $('input[name="upcArray"]').focus();
+      //-   }
+      //- }
+
+      //- function myDeleteFunction() {
+      //-     document.getElementById("myTable").deleteRow(-1);
+      //- }
+
+
+     
+
+
+
+
+
+
+

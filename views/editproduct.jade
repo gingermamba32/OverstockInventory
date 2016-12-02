@@ -1,0 +1,176 @@
+extends layout
+
+block content
+  
+
+  h1(style="padding-top: 40px; padding-bottom:20px;") Update UPC
+  form(method="Post", action="/update", name="update")
+   button.search.btn(type="submit", style="font-size:15px;", onclick="return updateAlert();") Save
+   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black; padding-bottom: 35px;")
+    tr(style="margin: 0 auto; background: #52bab3;")
+     td #[b UPC]
+     td #[b DESCRIPTION]
+     td #[b LOCATION]
+     td #[b QUANTITY]
+     td #[b PO#]
+
+    tr
+     td
+      input.form-control.upc(type="number", size="8", name="barcode", value="#{post[0].upc}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.location(type="text", size="8", name="description", value="#{post[0].description}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.location(type="text", size="8", name="location", value="#{post[0].location}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.quantity(type="number", size="8", name="qty", value="#{post[0].quantity}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.poNum(type="number", size="8", name="po", value="#{post[0].shipment}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+    tr(style="visibility:hidden;")
+     td
+      input.form-control.poNum(type="text", size="8", name="id", value="#{post[0]._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+    
+     
+    
+
+
+     
+
+  script.
+    $(document).ready(function() {
+      $('input[name=bin11]').focus();
+
+    $(".loc").keyup(function() {
+        if ($(this).val().length === 8) {
+            $('input[name=productupc11]').focus();
+            }
+        });
+    $(".inv").keyup(function() {
+        if ($(this).val().length === 6) {
+            $('input[name=qty11]').focus();
+            }
+        });
+
+    $(".inv2").keyup(function() {
+        if ($(this).val().length === 6) {
+            $('input[name=qty22]').focus();
+            }
+        });
+
+    $(".inv3").keyup(function() {
+        if ($(this).val().length === 6) {
+            $('input[name=qty33]').focus();
+            }
+        });
+
+
+
+      //- success message
+
+       $('.mess').hide();
+
+       $('.invSub').bind('click', function(){
+           window.scrollTo(0,0);
+           $('.mess').show(200).delay(4000).hide(200);
+       }); 
+
+
+          //- Press enter on quantities to submit to inventory
+        $('.quan').keypress(function (e){
+         if(e.which == 13){
+         $('.invSub').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+        //-  $('.quan2').keypress(function (e){
+        //-  if(e.which == 13){
+        //-  $('.invSub').focus().click();
+        //-  //window.scrollTo(200,400);
+        //-  return false;
+        //-  }
+        //- })
+        //-  $('.quan3').keypress(function (e){
+        //-  if(e.which == 13){
+        //-  $('.invSub').focus().click();
+        //-  //window.scrollTo(200,400);
+        //-  return false;
+        //-  }
+        //- })
+
+
+          //- Press enter to search attributes
+       $('.type').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.length').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.color').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.location').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.quantity').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.upc').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.poNum').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+
+       function warningView() {
+          if(confirm("Please confirm you want to delete this upc") == true){
+          return true;
+          } 
+        else{
+        return false;
+          }
+        }
+
+
+    });
+
+        function updateAlert() {
+        alert("#{post[0].description} has been updated")
+        };
+
+
+
+
+
+
+
+
+
+

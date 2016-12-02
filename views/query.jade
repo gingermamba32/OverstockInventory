@@ -1,0 +1,224 @@
+extends layout
+
+block content
+  
+  h1(style="padding-top: 40px;") Search Inventory
+  
+  form(method="Post", action="/query", name="DBQuery", style="padding-bottom: 50px; padding-top: 50px;")
+   button.search.btn(type="submit", style="font-size:15px;") Search
+   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black;")
+    tr(style="margin: 0 auto; background: #52bab3;")
+     td #[b UPC]
+     td #[a(data-toggle="modal" data-target="#myModal", style="text-decoration:none; cursor: pointer; color:black; font-weight: 600;") DESCRIPTION]
+     td #[b LOCATION]
+     td #[b QUANTITY]
+     td #[b PO#]
+     td #[b Update]
+     td #[b Delete]
+    tr
+     td(width="20%;")
+      input.form-control.upc(type="text", placeholder="barcode", size="8", name="barcode", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td(width="20%;")
+      input.form-control.location(type="text", placeholder="DES.CRIP.TION", size="8", name="description", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td(width="20%;")
+      input.form-control.location(type="text", placeholder="location", size="8", name="location", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td(width="20%;")
+      input.form-control.quantity(type="text", placeholder="qty", size="8", name="qty", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td(width="20%;")
+      input.form-control.poNum(type="text", placeholder="po", size="8", name="po", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     
+
+    if (nums.length)
+     each post, i in nums
+      tr
+       td= post.upc
+       td= post.description
+       td= post.location 
+       td= post.quantity
+       td= post.shipment
+       td #[a(href="/updateproduct/#{post.id}") Update]
+       td #[a(href="/deleteuser/#{post.id}", onclick="return warningList();") Delete]
+
+     
+  #myModal.modal.fade(role='dialog')
+      .modal-dialog.modal-lg
+        
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            h4.modal-title Search Product IDs
+          .modal-body
+            form(role='form', id='radio1', method="Post", action="/radioSearch", name="Radio",style="margin: 0 auto; width: 800px;")
+             h7(style="float:left; padding-right:5px; padding-top: 5px;font-size: 15px; color: black; font-weight: 700;") Length: &nbsp;&nbsp;
+             div(style="width: 700px;")
+              each post, i in num
+               if post.type == "Length"
+                label.btn.btn-primary(style="font-size: 10px; float:center;")
+                 input(type='radio', name='length', value='#{post.radio}', style="vertical-align: middle")
+                 | #[span=post.radio]
+             br
+             br
+             br
+             br
+             h7(style="float: left; padding-right:5px; padding-top: 5px;font-size: 15px; color: black; font-weight: 700;") Style: &nbsp;&nbsp;
+             div(style="width: 700px;")
+             each post, i in num
+              if post.type == "Style"
+               label.btn.btn-primary(style="font-size: 10px; float:center;")
+                input(type='radio', name='type', value='#{post.radio}', style="vertical-align: middle")
+                | #[span=post.radio]
+             br
+             br
+             br 
+             br
+             div(style="height: 75px;")
+             h7(style="float: left; padding-right:5px; padding-top: 5px;font-size: 15px; color: black; font-weight: 700;") Color:
+                          //- loop through "Color"....input name "color"
+             div(style="width: 700px;")
+             each post, i in num
+              if post.type == "Color"
+               label.btn.btn-primary(style="font-size: 10px; float:center;")
+                input(type='radio', name='color', value='#{post.radio}', style="vertical-align: middle")
+                | #[span=post.radio]
+             br
+             br
+             br
+             br
+             div(style="height: 75px; margin-top: 75px;")
+             h7(style="float: left; padding-right:5px; padding-top: 5px;font-size: 15px; color: black; font-weight: 700;") Tools:
+             //- loop through "Tool".....input name "type"
+             div(style="width: 700px;")
+             each post, i in num
+              if post.type == "Tool"
+               label.btn.btn-primary(style="font-size: 10px;")
+                input(type='radio', name='type', value='#{post.radio}', style="vertical-align: middle")
+                | #[span=post.radio]
+             br
+             br
+             br
+             div(style="height: 85px;")
+             button(type="submit", style="font-size:30px; padding-top:10px;") Search ProductID
+
+             
+  script.
+    $(document).ready(function() {
+      $('input[name=bin11]').focus();
+
+      $("#radio").trigger('reset');
+
+    //- $(".loc").keyup(function() {
+    //-     if ($(this).val().length === 8) {
+    //-         $('input[name=productupc11]').focus();
+    //-         }
+    //-     });
+    //- $(".inv").keyup(function() {
+    //-     if ($(this).val().length === 6) {
+    //-         $('input[name=qty11]').focus();
+    //-         }
+    //-     });
+
+    //- $(".inv2").keyup(function() {
+    //-     if ($(this).val().length === 6) {
+    //-         $('input[name=qty22]').focus();
+    //-         }
+    //-     });
+
+    //- $(".inv3").keyup(function() {
+    //-     if ($(this).val().length === 6) {
+    //-         $('input[name=qty33]').focus();
+    //-         }
+    //-     });
+
+
+
+      //- success message
+
+       $('.mess').hide();
+
+       $('.invSub').bind('click', function(){
+           window.scrollTo(0,0);
+           $('.mess').show(200).delay(4000).hide(200);
+       }); 
+        
+        //- Delete are you sure message
+        function warningList() {
+          if(confirm("Please confirm you want to delete this proposal") == true){
+          return true;
+          } 
+        else{
+        return false;
+          }
+        }
+
+
+
+        //-   //- Press enter on quantities to submit to inventory
+        $('.quan').keypress(function (e){
+         if(e.which == 13){
+         $('.invSub').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+
+         $('input:checked').removeAttr('checked');
+        $('input:checked').removeAttr('checked');
+        $('input:checked').removeAttr('checked');
+
+
+
+          //- Press enter to search attributes
+ 
+       $('.location').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.quantity').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.upc').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+       $('.poNum').keypress(function (e){
+         if(e.which == 13){
+         $('.search').focus().click();
+         //window.scrollTo(200,400);
+         return false;
+         }
+        })
+
+
+    });
+     
+     //- Delete are you sure message
+        function warningList() {
+          if(confirm("Please confirm you want to delete this UPC. Do NOT prevent future popups!") == true){
+          return true;
+          } 
+        else{
+        return false;
+          }
+        }
+
+        $('input:checked').removeAttr('checked');
+              $('input:checked').removeAttr('checked');
+              $('input:checked').removeAttr('checked');
+
+
+
+
+
+
+
+
