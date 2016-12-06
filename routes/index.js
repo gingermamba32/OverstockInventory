@@ -5,6 +5,8 @@ var csv = require('fast-csv');
 var fs = require('fs');
 var Busboy = require('busboy');
 var path = require('path');
+var moment = require('moment');
+//           box        : moment(num2).format('YYYY-MM-DD HH:mm:ss')
 
 // try catch the database
 try{
@@ -18,7 +20,7 @@ console.log("uristring is "+ uristring);
 
 mongoose.connect( uristring, function (err,res){
 	if (err) {
-		console.log('err');
+		console.log(err);
 	}
 	else{
 		console.log('success');
@@ -37,10 +39,6 @@ var locationsSchema = new mongoose.Schema({
 		type: String,
 		default: ''
 	}	,
-	shipment: {
-        type: String,
-        default: ''
-        },
     location: {
         type: String,
         default: ''
@@ -52,10 +50,6 @@ var locationsSchema = new mongoose.Schema({
     box: {
     	type: Number, 
     	default: ''
-    },
-    created: {
-        type: Date,
-        default: Date.now
     }
 });
 
@@ -94,12 +88,10 @@ router.get('/scan', function(req, res, next) {
 	res.render('index');
 	});
 
-
+//get the search page
 router.get('/search', function(req, res, next) {
-	Radios.find().exec(function(err,docs){
-						console.log( docs + ' good query length');
-						res.render('search', {'nums':docs});
-		});
+	res.render('search');
+
 })
 
 router.get('/addUpc', function(req, res, next) {
@@ -121,116 +113,118 @@ router.get('/test', function(req, res, next) {
 	res.render('test');
 })
 
-router.post('/radioSearch', function(req,res,next){
-	globalColor = req.body.color;
-	globalType = req.body.type;
-	globalLength = req.body.length;
-	globalUpc = '';
-	globalDesc = '';
-	globalLoc = '';
-	globalQty = '';
-	globalPo = '';
 
-	console.log(globalColor);
-	console.log(globalType);
-	console.log(globalLength);
+//do not need the radio search anymore
+// router.post('/radioSearch', function(req,res,next){
+// 	globalColor = req.body.color;
+// 	globalType = req.body.type;
+// 	globalLength = req.body.length;
+// 	globalUpc = '';
+// 	globalDesc = '';
+// 	globalLoc = '';
+// 	globalQty = '';
+// 	globalPo = '';
 
-	console.log(req.body.length);
-	console.log(req.body.type);
-	console.log(req.body.color);
+// 	console.log(globalColor);
+// 	console.log(globalType);
+// 	console.log(globalLength);
+
+// 	console.log(req.body.length);
+// 	console.log(req.body.type);
+// 	console.log(req.body.color);
 
 
 	
-	//new RegExp("^"
-	if (req.body.type == undefined && req.body.color == undefined){
-		Locations.find({description: new RegExp("^" + req.body.length)}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query length');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
+// 	//new RegExp("^"
+// 	if (req.body.type == undefined && req.body.color == undefined){
+// 		Locations.find({description: new RegExp("^" + req.body.length)}).sort({shipment: 1}).exec(function(err,docs){
+// 			console.log( docs + ' good query length');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
 
-	}
-	else if (req.body.length == undefined && req.body.color == undefined){
-		Locations.find({description: new RegExp(req.body.type)}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query type');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}
+// 	}
+// 	else if (req.body.length == undefined && req.body.color == undefined){
+// 		Locations.find({description: new RegExp(req.body.type)}).sort({shipment: 1}).exec(function(err,docs){
+// 			console.log( docs + ' good query type');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
+// 	}
 
-	else if (req.body.length == undefined && req.body.type == undefined){
-		Locations.find({description: new RegExp(req.body.color)}).sort({shipment: 1}).exec(function(err, docs){
-			console.log( docs + ' good query color');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}
-	else if (req.body.color == undefined){
-		Locations.find({description: new RegExp("^" + req.body.length + "." + req.body.type)}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query length+type');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}
-	else if (req.body.length == undefined){
-		Locations.find({description: new RegExp(req.body.type + "\." + req.body.color + "\.$")}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query type + color');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}
+// 	else if (req.body.length == undefined && req.body.type == undefined){
+// 		Locations.find({description: new RegExp(req.body.color)}).sort({shipment: 1}).exec(function(err, docs){
+// 			console.log( docs + ' good query color');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
+// 	}
+// 	else if (req.body.color == undefined){
+// 		Locations.find({description: new RegExp("^" + req.body.length + "." + req.body.type)}).sort({shipment: 1}).exec(function(err,docs){
+// 			console.log( docs + ' good query length+type');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
+// 	}
+// 	else if (req.body.length == undefined){
+// 		Locations.find({description: new RegExp(req.body.type + "\." + req.body.color + "\.$")}).sort({shipment: 1}).exec(function(err,docs){
+// 			console.log( docs + ' good query type + color');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
+// 	}
 
-	else if (req.body.type == undefined){
-		Locations.find({description: new RegExp("^"+req.body.length + ".*" + req.body.color + "\.$")}).sort({shipment: 1}).exec(function(err, docs){
-			console.log( docs + ' good query length + color');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}
-	else {
-	Locations.find({description: req.body.length + "." + req.body.type + "." + req.body.color + "."}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		});
-	}
-})
+// 	else if (req.body.type == undefined){
+// 		Locations.find({description: new RegExp("^"+req.body.length + ".*" + req.body.color + "\.$")}).sort({shipment: 1}).exec(function(err, docs){
+// 			console.log( docs + ' good query length + color');
+// 			Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		})
+// 	}
+// 	else {
+// 	Locations.find({description: req.body.length + "." + req.body.type + "." + req.body.color + "."}).sort({shipment: 1}).exec(function(err,docs){
+// 		console.log( docs + ' good query');
+// 		Radios.find().exec(function(err,files){
+// 				console.log(files);
+// 				res.render('query', {'nums':docs, 'num':files});
+// 			});
+// 		});
+// 	}
+// })
 
-router.post('/addUpc', function(req, res,next){
-	console.log(req.body.quantity);
-	Locations.findOne({upc: req.body.barcode}, function(err, docs) {
-		if (docs != null) {
-			res.redirect('/invalidInventory');
-		}
-		else {
-			var newUpc = new Locations({
-			upc        : req.body.upc,
-			description: (req.body.description).toUpperCase(),
-			location   : req.body.location,
-			shipment   : req.body.po,
-			quantity   : req.body.quantity
-			});
-							console.log(newUpc);
-							newUpc.save(function(err, callback){
-							res.render('upc', {successmessage: 'You have successfully added '+ req.body.description+ ' to the database.'});
-							})
-		}
-	});
-});
+// router.post('/addUpc', function(req, res,next){
+// 	console.log(req.body.quantity);
+// 	Locations.findOne({upc: req.body.barcode}, function(err, docs) {
+// 		if (docs != null) {
+// 			res.redirect('/invalidInventory');
+// 		}
+// 		else {
+// 			var newUpc = new Locations({
+// 			upc        : req.body.upc,
+// 			description: (req.body.description).toUpperCase(),
+// 			location   : req.body.location,
+// 			shipment   : req.body.po,
+// 			quantity   : req.body.quantity
+// 			});
+// 							console.log(newUpc);
+// 							newUpc.save(function(err, callback){
+// 							res.render('upc', {successmessage: 'You have successfully added '+ req.body.description+ ' to the database.'});
+// 							})
+// 		}
+// 	});
+// });
 
 
 // // Query the database by UPC and return 
@@ -329,8 +323,7 @@ router.post('/addUpc', function(req, res,next){
 
 
 
-
-
+//scan in new upcs
 router.post('/locateThree', function( req, res, next ){
 	var num = new Date();
 	var num = Date.now();
@@ -1197,6 +1190,8 @@ router.post('/locateThree', function( req, res, next ){
 // 	 });
 // })
 
+
+// This is the search page 
 // Full search feature....upc is unique and can only have one search function
 router.post('/query', function(req,res,next){
 	
@@ -1204,119 +1199,56 @@ router.post('/query', function(req,res,next){
 	console.log(req.body.location);
 	console.log(req.body.qty);
 	console.log(req.body.barcode);
-	console.log(req.body.po);
 
 	globalUpc = req.body.barcode;
 	globalDesc = (req.body.description).toUpperCase();
 	globalLoc = req.body.location;
 	globalQty = req.body.qty;
-	globalPo = req.body.po;
-	globalColor = undefined;
-	globalType = undefined;
-	globalLength = undefined;
 
-	console.log(globalUpc); 
+	console.log(globalUpc + 'THIS IS THE GLOBAL UPC'); 
 	console.log(globalDesc); 
 	console.log(globalLoc + ' this is the global location now');
 	console.log(globalQty);
-	console.log(globalPo);
+
 	if (req.body.barcode != '' && req.body.location != ''){
 		Locations.find({upc: req.body.barcode, location: req.body.location}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+			res.render('query', {'nums':docs});
 		})
 	}	
 
 	else if (req.body.barcode != '' && req.body.description != ''){
 		Locations.find({upc: req.body.barcode, description: new RegExp((req.body.description).toUpperCase())}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		})
 	}
 
 	else if (req.body.barcode != '' && req.body.qty != ''){
 		Locations.find({upc: req.body.barcode, quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}	
-
-	else if (req.body.barcode != '' && req.body.po != ''){
-		Locations.find({upc: req.body.barcode, shipment: req.body.po}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		})
 	}	
 
 	else if (req.body.description != '' && req.body.location != ''){
 		Locations.find({description: new RegExp((req.body.description).toUpperCase()), location: req.body.location}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		})
 	}	
 
 	else if (req.body.description != '' && req.body.qty != ''){
 		Locations.find({description: new RegExp((req.body.description).toUpperCase()), quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}	
-
-	else if (req.body.description != '' && req.body.po != ''){
-		Locations.find({description: new RegExp((req.body.description).toUpperCase()), shipment: req.body.po}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		})
 	}	
 
 	else if (req.body.location != '' && req.body.qty != ''){
 		Locations.find({location: req.body.location, quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
 		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}	
-
-	else if (req.body.location != '' && req.body.po != ''){
-		Locations.find({location: req.body.location, shipment: req.body.po}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		})
-	}	
-
-	else if (req.body.qty != '' && req.body.po != ''){
-		Locations.find({quantity: req.body.qty, shipment: req.body.po}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		})
 	}	
 
@@ -1324,10 +1256,7 @@ router.post('/query', function(req,res,next){
 	else if (req.body.barcode != ''){
     Locations.find({upc: req.body.barcode}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 	 });
 	}
 
@@ -1339,19 +1268,13 @@ router.post('/query', function(req,res,next){
 		if ( ((req.body.description).split('.').length-1) === 3 ){
 			Locations.find({description: new RegExp("^" + (req.body.description).toUpperCase() + '$')}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 	 		});
 		}
 		else {
 			Locations.find({description: new RegExp("^" + (req.body.description).toUpperCase())}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + ' good query');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 	 		});
 		}
 	}
@@ -1359,34 +1282,18 @@ router.post('/query', function(req,res,next){
 	else if (req.body.location != '') {
 		Locations.find({location: req.body.location}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + 'good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 	 });
 	}
 
 	else if (req.body.qty != ''){
 		Locations.find({quantity: req.body.qty}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + 'good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 	 });
 	}
 
-	else if (req.body.po != ''){
-		Locations.find({shipment: req.body.po}).sort({quantity: 1}).exec(function(err, docs) {
-			console.log( docs + ' good query');
-		Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-	 });
-	}
-
-	else if (req.body.po == '' && req.body.qty == '' && req.body.location == '' && req.body.description == '' && req.body.barcode == ''){
+	else if (req.body.qty == '' && req.body.location == '' && req.body.description == '' && req.body.barcode == ''){
 		res.render('search', {message: 'You have have not searched anything!'})
 	}	
 
@@ -1403,9 +1310,6 @@ router.get('/deleteuser/:id', function(req, res){
 	console.log(globalLoc);
 	console.log(globalQty);
 	console.log(globalPo);
-	console.log(globalType);
-	console.log(globalLength);
-	console.log(globalColor);
 
 // To fix this we need to use find by id, find by upc, 2 conditions, one to update and one to remove
 
@@ -1418,112 +1322,46 @@ router.get('/deleteuser/:id', function(req, res){
 	// });
 	// });
 	//if array of search is 1 findOneAnd
-		if (globalLength != undefined && globalColor != undefined && globalType != undefined) {
-		Locations.find({description: globalLength + "." + globalType + "." + globalColor + "."}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query all three modal');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			});
-		}	
-		else if (globalUpc != '' && globalLoc != ''){
+		if (globalUpc != '' && globalLoc != ''){
 			Locations.find({upc: globalUpc, location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + upc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalUpc != '' && globalDesc != ''){
 			Locations.find({upc: globalUpc, description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query upc + description');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}
 
 		else if (globalUpc != '' && globalQty != ''){
 			Locations.find({upc: globalUpc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query upc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalUpc != '' && globalPo != ''){
-			Locations.find({upc: globalUpc, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalDesc != '' && globalLoc != ''){
 			Locations.find({description: new RegExp(globalDesc), location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query desc + loc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalDesc != '' && globalQty != ''){
 			Locations.find({description: new RegExp(globalDesc), quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query desc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
+				res.render('query', {'nums':docs});
 
-		else if (globalDesc != '' && globalPo != ''){
-			Locations.find({description: new RegExp(globalDesc), shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
 			})
 		}	
 
 		else if (globalLoc != '' && globalQty != ''){
 			Locations.find({location: globalLoc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalLoc != '' && globalPo != ''){
-			Locations.find({location: globalLoc, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query loc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalQty != '' && globalPo != ''){
-			Locations.find({quantity: globalQty, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query + qty + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
@@ -1531,111 +1369,30 @@ router.get('/deleteuser/:id', function(req, res){
 		else if (globalUpc != ''){
 	    Locations.find({upc: globalUpc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query upc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalDesc != ''){
 		Locations.find({description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query desc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalLoc != '') {
 			Locations.find({location: globalLoc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + 'good query loc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalQty != ''){
 			Locations.find({quantity: globalQty}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + 'good query qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
-
-		else if (globalPo != ''){
-			Locations.find({shipment: globalPo}).sort({quantity: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		 });
-		}
-
-		else if (globalLength != undefined && globalType != undefined){
-			Locations.find({description: new RegExp("^" + globalLength + "." + globalType)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query length type');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-		else if (globalType != undefined && globalColor != undefined) {
-			Locations.find({description: new RegExp(globalType + "\." + globalColor + "\.$")}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query type + color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-
-		else if (globalLength != undefined && globalColor != undefined){
-			Locations.find({description: new RegExp("^"+globalLength + ".*" + globalColor + "\.$")}).sort({shipment: 1}).exec(function(err, docs){
-				console.log( docs + ' good query length color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-		else if (globalLength != undefined){
-			Locations.find({description: new RegExp("^" + globalLength)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query length');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-
-		}
-		else if (globalType != undefined){
-			Locations.find({description: new RegExp(globalType)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query type');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-
-		else if (globalColor != undefined){
-			Locations.find({description: new RegExp(globalColor)}).sort({shipment: 1}).exec(function(err, docs){
-				console.log( docs + ' good query color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-	
 
 	});
 });
@@ -1657,229 +1414,80 @@ router.post('/update', function(req, res){
                     description 	   : req.body.description,
                     location           : req.body.location,
                     quantity           : req.body.qty,
-                    shipment 	       : req.body.po 
+                    box 	           : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss') 
             }}, 
             {upsert: false} , function(err, docs) {
 				console.log(docs + " Updated Document");
-		if (globalLength != undefined && globalColor != undefined && globalType != undefined) {
-			Locations.find({description: globalLength + "." + globalType + "." + globalColor + "."}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query all three modal');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			});
-		}	
-		else if (globalUpc != '' && globalLoc != ''){
+
+		if (globalUpc != '' && globalLoc != ''){
 			Locations.find({upc: globalUpc, location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + upc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalUpc != '' && globalDesc != ''){
 			Locations.find({upc: globalUpc, description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query upc + description');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}
 
 		else if (globalUpc != '' && globalQty != ''){
 			Locations.find({upc: globalUpc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query upc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalUpc != '' && globalPo != ''){
-			Locations.find({upc: globalUpc, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalDesc != '' && globalLoc != ''){
 			Locations.find({description: new RegExp(globalDesc), location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query desc + loc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalDesc != '' && globalQty != ''){
 			Locations.find({description: new RegExp(globalDesc), quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query desc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalDesc != '' && globalPo != ''){
-			Locations.find({description: new RegExp(globalDesc), shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
 
 		else if (globalLoc != '' && globalQty != ''){
 			Locations.find({location: globalLoc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 			})
 		}	
-
-		else if (globalLoc != '' && globalPo != ''){
-			Locations.find({location: globalLoc, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query loc + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
-		else if (globalQty != '' && globalPo != ''){
-			Locations.find({quantity: globalQty, shipment: globalPo}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query + qty + po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}	
-
 
 		else if (globalUpc != ''){
 	    Locations.find({upc: globalUpc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query upc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalDesc != ''){
 		Locations.find({description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query desc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalLoc != '') {
 			Locations.find({location: globalLoc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + 'good query loc');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
 
 		else if (globalQty != ''){
 			Locations.find({quantity: globalQty}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + 'good query qty');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
+				res.render('query', {'nums':docs});
 		 });
 		}
-
-		else if (globalPo != ''){
-			Locations.find({shipment: globalPo}).sort({quantity: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query po');
-			Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-		 });
-		}
-
-		else if (globalLength != undefined && globalType != undefined){
-			Locations.find({description: new RegExp("^" + globalLength + "." + globalType)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query length type');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-		else if (globalType != undefined && globalColor != undefined) {
-			Locations.find({description: new RegExp(globalType + "\." + globalColor + "\.$")}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query type + color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-
-		else if (globalLength != undefined && globalColor != undefined){
-			Locations.find({description: new RegExp("^"+globalLength + ".*" + globalColor + "\.$")}).sort({shipment: 1}).exec(function(err, docs){
-				console.log( docs + ' good query length color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-		else if (globalLength != undefined){
-			Locations.find({description: new RegExp("^" + globalLength)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query length');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-
-		}
-		else if (globalType != undefined){
-			Locations.find({description: new RegExp(globalType)}).sort({shipment: 1}).exec(function(err,docs){
-				console.log( docs + ' good query type');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-
-		else if (globalColor != undefined){
-			Locations.find({description: new RegExp(globalColor)}).sort({shipment: 1}).exec(function(err, docs){
-				console.log( docs + ' good query color');
-				Radios.find().exec(function(err,files){
-				console.log(files);
-				res.render('query', {'nums':docs, 'num':files});
-			});
-			})
-		}
-
-
 
     });          
 })
@@ -1971,9 +1579,8 @@ router.post('/excel', function(req, res, next) {
 							location   : 'DO NOT DELETE',
 							upc        : excel_upc,
 							description: excel_description,
-							shipment   : 'DO NOT DELETE',
 							quantity   : 0,
-							box        : Date.now()
+							box        : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
 						});
 						console.log(newLocation);
 						newLocation.save(function(err, callback){
@@ -2006,34 +1613,34 @@ router.post('/excel', function(req, res, next) {
 });
 
 // Add Radio Button to the search page
-router.post('/radioAdd', function(req, res,next){
-	console.log(req.body.radio);
-	console.log(req.body.searchtype);
-	var newRadio = new Radios ({
-		radio   : req.body.radio,
-		type    : req.body.searchtype
-	});
-	console.log(newRadio);
+// router.post('/radioAdd', function(req, res,next){
+// 	console.log(req.body.radio);
+// 	console.log(req.body.searchtype);
+// 	var newRadio = new Radios ({
+// 		radio   : req.body.radio,
+// 		type    : req.body.searchtype
+// 	});
+// 	console.log(newRadio);
 
-	newRadio.save(function(err, callback){
-		console.log("upc saved!!");
-		// Display the radios db items on the search page
-		Radios.find().exec(function(err,docs){
-						console.log( docs + ' good query length');
-						res.render('search', {'nums':docs});
-		});
+// 	newRadio.save(function(err, callback){
+// 		console.log("upc saved!!");
+// 		// Display the radios db items on the search page
+// 		Radios.find().exec(function(err,docs){
+// 						console.log( docs + ' good query length');
+// 						res.render('search', {'nums':docs});
+// 		});
 
-	});
-});
+// 	});
+// });
 
-// Delete Radio Buttons
-router.get('/deletebutton/:id', function(req, res){
-	Radios.remove({ _id: req.params.id }, function(err, docs){
-		Radios.find().exec(function(err,docs){
-			console.log( docs + ' good query length');
-			res.render('search', {'nums':docs});
-		});
-	});
-});
+// // Delete Radio Buttons
+// router.get('/deletebutton/:id', function(req, res){
+// 	Radios.remove({ _id: req.params.id }, function(err, docs){
+// 		Radios.find().exec(function(err,docs){
+// 			console.log( docs + ' good query length');
+// 			res.render('search', {'nums':docs});
+// 		});
+// 	});
+// });
 
 module.exports = router;

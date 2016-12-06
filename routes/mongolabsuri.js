@@ -1,4 +1,4 @@
 var mongoLabs=
-'mongodb://gingermamba32:leigh1@ds053148.mongolab.com:53148/babev2';
+'mongodb://gingermamba32:leigh1@ds119728.mlab.com:19728/beautydepot';
 
 exports.name = mongoLabs;
