@@ -48,7 +48,7 @@ var locationsSchema = new mongoose.Schema({
         default: ''
         },
     box: {
-    	type: Number, 
+    	type: String, 
     	default: ''
     }
 });
@@ -334,20 +334,35 @@ router.post('/locateThree', function( req, res, next ){
 	console.log(req.body);
 	console.log(req.body.upc1);  //productupc11
 	console.log(req.body.quantity1); //qty11
+	var searchedUPC = req.body.upc1;
 					
 					var momentDate = Date.now(); 
+					var newMoment = moment(momentDate).format('YYYY-MM-DD HH:mm:ss');
+					console.log(newMoment);
 
             		Locations.findOneAndUpdate({upc: req.body.upc1}, 
-            			{$inc: {quantity: req.body.quantity1}}, 
-            			{$set: {box: moment(momentDate).format('YYYY-MM-DD HH:mm:ss')}},
+            			{
+            				$inc: {quantity: req.body.quantity1},
+            				$set: {box: newMoment}
+            			}, 
 						{upsert: false}, 
 							function(err, docs) {
-		            			if (docs === null){
-		            				res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it before updating qty!'});
+								console.log(docs + 'HELLLLLLLLPPPPPPPPP!');
+		            			if (docs == null){
+		            				
+									res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it to the system!'});
+									
+		            				//res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it before updating qty!'});
 		            			}
 							    else { 
 								            	console.log( docs + " Updated Document");
-								            	res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs });    
+								            	Locations.findOne({upc: docs.upc}).exec(function(err, docs){
+													console.log( docs + ' good query loc + PROD');
+													console.log(docs);
+													console.log(docs.quantity)
+													res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs }); 
+												})
+								            	//res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs });    
 		            				}
 	
 

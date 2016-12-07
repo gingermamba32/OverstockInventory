@@ -17,16 +17,16 @@ block content
 
     tr
      td
-      input.form-control.upc(type="number", size="8", name="barcode", value="#{post[0].upc}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+      input.form-control.upc(type="number", size="8", name="barcode", value="#{post.upc}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
      td
-      input.form-control.location(type="text", size="8", name="description", value="#{post[0].description}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+      input.form-control.location(type="text", size="8", name="description", value="#{post.description}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
      td
-      input.form-control.location(type="text", size="8", name="location", value="#{post[0].location}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+      input.form-control.location(type="text", size="8", name="location", value="#{post.location}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
      td
-      input.form-control.quantity(type="number", size="8", name="qty", value="#{post[0].quantity}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+      input.form-control.quantity(type="number", size="8", name="qty", value="#{post.quantity}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
     tr(style="visibility:hidden;")
      td
-      input.form-control.poNum(type="text", size="8", name="id", value="#{post[0]._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+      input.form-control.poNum(type="text", size="8", name="id", value="#{post._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
  
 
      
