@@ -56,22 +56,22 @@ var locationsSchema = new mongoose.Schema({
 var Locations = mongoose.model('locations', locationsSchema);
 
 // db schema for the radio collection
-var radiosSchema = new mongoose.Schema({ 
-	radio: {
-		type: String,
-		default: ''
-	}	,
-	type: {
-		type: String,
-		default: ''
-	},
-    created: {
-        type: Date,
-        default: Date.now
-    }
-});
+// var radiosSchema = new mongoose.Schema({ 
+// 	radio: {
+// 		type: String,
+// 		default: ''
+// 	}	,
+// 	type: {
+// 		type: String,
+// 		default: ''
+// 	},
+//     created: {
+//         type: Date,
+//         default: Date.now
+//     }
+// });
 
-var Radios = mongoose.model('radios', radiosSchema);
+// var Radios = mongoose.model('radios', radiosSchema);
 
 
 
@@ -1195,20 +1195,14 @@ router.post('/locateThree', function( req, res, next ){
 // Full search feature....upc is unique and can only have one search function
 router.post('/query', function(req,res,next){
 	
-	console.log(req.body.description);
 	console.log(req.body.location);
-	console.log(req.body.qty);
 	console.log(req.body.barcode);
 
 	globalUpc = req.body.barcode;
-	globalDesc = (req.body.description).toUpperCase();
 	globalLoc = req.body.location;
-	globalQty = req.body.qty;
 
 	console.log(globalUpc + 'THIS IS THE GLOBAL UPC'); 
-	console.log(globalDesc); 
 	console.log(globalLoc + ' this is the global location now');
-	console.log(globalQty);
 
 	if (req.body.barcode != '' && req.body.location != ''){
 		Locations.find({upc: req.body.barcode, location: req.body.location}).sort({shipment: 1}).exec(function(err,docs){
@@ -1217,42 +1211,6 @@ router.post('/query', function(req,res,next){
 		})
 	}	
 
-	else if (req.body.barcode != '' && req.body.description != ''){
-		Locations.find({upc: req.body.barcode, description: new RegExp((req.body.description).toUpperCase())}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-		})
-	}
-
-	else if (req.body.barcode != '' && req.body.qty != ''){
-		Locations.find({upc: req.body.barcode, quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-		})
-	}	
-
-	else if (req.body.description != '' && req.body.location != ''){
-		Locations.find({description: new RegExp((req.body.description).toUpperCase()), location: req.body.location}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-		})
-	}	
-
-	else if (req.body.description != '' && req.body.qty != ''){
-		Locations.find({description: new RegExp((req.body.description).toUpperCase()), quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-		})
-	}	
-
-	else if (req.body.location != '' && req.body.qty != ''){
-		Locations.find({location: req.body.location, quantity: req.body.qty}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-		})
-	}	
-
-
 	else if (req.body.barcode != ''){
     Locations.find({upc: req.body.barcode}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + ' good query');
@@ -1260,34 +1218,8 @@ router.post('/query', function(req,res,next){
 	 });
 	}
 
-// multi condition for the description field
-	else if (req.body.description != ''){
-		var reg = '22.SI.BURG.'
-		console.log((reg.split('.').length -1) + ' HELLO');
-		console.log(req.body.description.split('.').length -1);
-		if ( ((req.body.description).split('.').length-1) === 3 ){
-			Locations.find({description: new RegExp("^" + (req.body.description).toUpperCase() + '$')}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-	 		});
-		}
-		else {
-			Locations.find({description: new RegExp("^" + (req.body.description).toUpperCase())}).sort({shipment: 1}).exec(function(err, docs) {
-			console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-	 		});
-		}
-	}
-	// ******************
 	else if (req.body.location != '') {
 		Locations.find({location: req.body.location}).sort({shipment: 1}).exec(function(err, docs) {
-			console.log( docs + 'good query');
-				res.render('query', {'nums':docs});
-	 });
-	}
-
-	else if (req.body.qty != ''){
-		Locations.find({quantity: req.body.qty}).sort({shipment: 1}).exec(function(err, docs) {
 			console.log( docs + 'good query');
 				res.render('query', {'nums':docs});
 	 });
@@ -1306,10 +1238,8 @@ router.post('/query', function(req,res,next){
 router.get('/deleteuser/:id', function(req, res){
 	console.log(req.params.id);
 	console.log(globalUpc); 
-	console.log(globalDesc); 
 	console.log(globalLoc);
-	console.log(globalQty);
-	console.log(globalPo);
+
 
 // To fix this we need to use find by id, find by upc, 2 conditions, one to update and one to remove
 
@@ -1329,43 +1259,6 @@ router.get('/deleteuser/:id', function(req, res){
 			})
 		}	
 
-		else if (globalUpc != '' && globalDesc != ''){
-			Locations.find({upc: globalUpc, description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + description');
-				res.render('query', {'nums':docs});
-			})
-		}
-
-		else if (globalUpc != '' && globalQty != ''){
-			Locations.find({upc: globalUpc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + qty');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalDesc != '' && globalLoc != ''){
-			Locations.find({description: new RegExp(globalDesc), location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + loc');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalDesc != '' && globalQty != ''){
-			Locations.find({description: new RegExp(globalDesc), quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + qty');
-				res.render('query', {'nums':docs});
-
-			})
-		}	
-
-		else if (globalLoc != '' && globalQty != ''){
-			Locations.find({location: globalLoc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query loc + qty');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-
 		else if (globalUpc != ''){
 	    Locations.find({upc: globalUpc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + ' good query upc');
@@ -1373,23 +1266,9 @@ router.get('/deleteuser/:id', function(req, res){
 		 });
 		}
 
-		else if (globalDesc != ''){
-		Locations.find({description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query desc');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
 		else if (globalLoc != '') {
 			Locations.find({location: globalLoc}).sort({shipment: 1}).exec(function(err, docs) {
 				console.log( docs + 'good query loc');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
-		else if (globalQty != ''){
-			Locations.find({quantity: globalQty}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + 'good query qty');
 				res.render('query', {'nums':docs});
 		 });
 		}
@@ -1398,14 +1277,20 @@ router.get('/deleteuser/:id', function(req, res){
 });
 
 router.get('/updateproduct/:id', function(req, res){
+	console.log(globalUpc); 
+
 	Locations.find({_id: req.params.id}, function(err, docs){
 		console.log(docs + ' User to edit');
 		res.render('editproduct', { post:docs } );
 	});
 });
 
+
+
+///Update a product that you search for
 router.post('/update', function(req, res){
 	console.log(req.body.id + ' Hello');
+
 	Locations.findOneAndUpdate(
 		{_id: req.body.id},
 		{$set: {
@@ -1414,81 +1299,19 @@ router.post('/update', function(req, res){
                     description 	   : req.body.description,
                     location           : req.body.location,
                     quantity           : req.body.qty,
-                    box 	           : moment(Date.now()).format('YYYY-MM-DD HH:mm:ss') 
+                    box 	           : Date.now()
             }}, 
             {upsert: false} , function(err, docs) {
+            	console.log(err);
 				console.log(docs + " Updated Document");
+				console.log(docs.upc);
+				var savesearch = docs.upc
 
-		if (globalUpc != '' && globalLoc != ''){
-			Locations.find({upc: globalUpc, location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
+		
+			Locations.find({upc: savesearch}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + upc');
 				res.render('query', {'nums':docs});
 			})
-		}	
-
-		else if (globalUpc != '' && globalDesc != ''){
-			Locations.find({upc: globalUpc, description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + description');
-				res.render('query', {'nums':docs});
-			})
-		}
-
-		else if (globalUpc != '' && globalQty != ''){
-			Locations.find({upc: globalUpc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query upc + qty');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalDesc != '' && globalLoc != ''){
-			Locations.find({description: new RegExp(globalDesc), location: globalLoc}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + loc');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalDesc != '' && globalQty != ''){
-			Locations.find({description: new RegExp(globalDesc), quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query desc + qty');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalLoc != '' && globalQty != ''){
-			Locations.find({location: globalLoc, quantity: globalQty}).sort({shipment: 1}).exec(function(err,docs){
-			console.log( docs + ' good query loc + qty');
-				res.render('query', {'nums':docs});
-			})
-		}	
-
-		else if (globalUpc != ''){
-	    Locations.find({upc: globalUpc}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query upc');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
-		else if (globalDesc != ''){
-		Locations.find({description: new RegExp(globalDesc)}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + ' good query desc');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
-		else if (globalLoc != '') {
-			Locations.find({location: globalLoc}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + 'good query loc');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
-		else if (globalQty != ''){
-			Locations.find({quantity: globalQty}).sort({shipment: 1}).exec(function(err, docs) {
-				console.log( docs + 'good query qty');
-				res.render('query', {'nums':docs});
-		 });
-		}
-
     });          
 })
 
@@ -1576,7 +1399,7 @@ router.post('/excel', function(req, res, next) {
 	        	// ************************
 
 				var newLocation = new Locations ({
-							location   : 'DO NOT DELETE',
+							location   : 'FIRST ENTRY',
 							upc        : excel_upc,
 							description: excel_description,
 							quantity   : 0,

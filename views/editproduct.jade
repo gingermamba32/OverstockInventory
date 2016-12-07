@@ -12,7 +12,6 @@ block content
      td #[b DESCRIPTION]
      td #[b LOCATION]
      td #[b QUANTITY]
-     td #[b PO#]
 
     tr
      td
@@ -23,8 +22,6 @@ block content
       input.form-control.location(type="text", size="8", name="location", value="#{post[0].location}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
      td
       input.form-control.quantity(type="number", size="8", name="qty", value="#{post[0].quantity}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
-     td
-      input.form-control.poNum(type="number", size="8", name="po", value="#{post[0].shipment}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
     tr(style="visibility:hidden;")
      td
       input.form-control.poNum(type="text", size="8", name="id", value="#{post[0]._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
