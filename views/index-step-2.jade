@@ -2,25 +2,31 @@ extends layout
 
 block content
   
-  h1(id="header", style="padding-top: 75px;") Scan Inventory
+  h1(id="header", style="padding-top: 75px;") Check Your Updated Product
 
   h5(style="color:red;")=success
 
-  div.inputFields(style="background:#D0D0D0; width:90%; margin:80px auto; padding-top:20px; padding-bottom:50px; border-radius: 8px;")
-   h2(style="text-align:center; padding-bottom: 10px;")=error
-   div(style="float:right; margin-top: 0.35%; padding-right: 10px;")
-    //- button.btn.btn-warning(onclick="myDeleteFunction()", style="font-size: 40px; background-color:red; color:white; border: 1px solid;") &#8593;
-    //- br
-    //- button.btn.btn-warning(onclick="myCreateFunction()", style="font-size: 40px; background-color:green; color: white; border: 1px solid #ddd;") &#8595;
+  form(method="Post", action="/updateStepTwo", name="update")
+   button.search.btn(type="submit", style="font-size:15px;", onclick="return updateAlert();") Save
+   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black; padding-bottom: 35px;")
+    tr(style="margin: 0 auto; background: #52bab3;")
+     td #[b UPC]
+     td #[b DESCRIPTION]
+     td #[b LOCATION]
+     td #[b QUANTITY]
 
-   form(role='form', method="Post", action="/locateThree", name="ProductQuantity")
-    table.table-striped.table-bordered.table-responsive#myTable(width="80%", align="center", style="font-size:18px;border-collapse:collapse" )
-     tr
-      td
-       input.form-control.scanner(type="text", required, id="upc", placeholder="UPC #1",  name="upc1", size="10")
-      td
-       input.form-control.quan.scanner(type="number", required, placeholder="QUANTITY #1",  name="quantity1", size="10")
-    button.btn.invSub(type="submit", onclick="return checker();", style="font-size:35px;") Submit
+    tr
+     td
+      input.form-control.upc(type="number", size="8", name="barcode", value="#{post[0].upc}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.location(type="text", size="8", name="description", value="#{post[0].description}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.location(type="text", size="8", name="location", value="#{post[0].location}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+     td
+      input.form-control.quantity(type="number", size="8", name="qty", value="#{post[0].quantity}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
+    tr(style="visibility:hidden;")
+     td
+      input.form-control.poNum(type="text", size="8", name="id", value="#{post[0]._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
  
 
      
