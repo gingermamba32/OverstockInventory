@@ -386,9 +386,9 @@ router.post('/updateStepTwo', function(req, res){
             }}, 
             {upsert: false} , function(err, docs) {
 				var savesearch = docs.upc
-			Locations.find({upc: savesearch}).sort({shipment: 1}).exec(function(err,docs){
+			Locations.findOne({upc: savesearch}).sort({shipment: 1}).exec(function(err,docs){
 			console.log( docs + ' good query loc + upc');
-				res.render('query', {'nums':docs});
+				res.render('scan', {success: docs.upc + ' Updated!'});
 			})
     });          
 })
