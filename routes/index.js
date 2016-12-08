@@ -360,7 +360,7 @@ router.post('/locateThree', function( req, res, next ){
 													console.log( docs + ' good query loc + PROD');
 													console.log(docs);
 													console.log(docs.quantity)
-													res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs }); 
+													res.render('index-step-2', { success: 'NOTE: ' + docs.upc + ' has been updated to ' + docs.quantity, post:docs }); 
 												})
 								            	//res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs });    
 		            				}

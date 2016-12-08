@@ -2,13 +2,14 @@ extends layout
 
 block content
   
-  h1(id="header", style="padding-top: 75px;") Check Your Updated Product
+  //- h1(id="header", style="padding-top: 75px;") UPC Updated
+  a.search.btn(href="/scan" style="padding-bottm: 20px; font-size: 32px;") Scan More!
+  h5(style="color:red; padding-top: 20px;")=success
 
-  h5(style="color:red;")=success
+  h3(id="header", style="padding-top: 20px; padding-bottom: 5px;") Edit UPC
 
-  form(method="Post", action="/updateStepTwo", name="update")
-   button.search.btn(type="submit", style="font-size:15px;", onclick="return updateAlert();") Save
-   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black; padding-bottom: 35px;")
+  form(method="Post", action="/updateStepTwo", name="update" style="padding-bottom: 20px;")
+   table.table-striped.table-bordered.table-responsive(width="90%", align="center", style="font-size:18px; color:black; padding-bottom: 5px;")
     tr(style="margin: 0 auto; background: #52bab3;")
      td #[b UPC]
      td #[b DESCRIPTION]
@@ -27,7 +28,7 @@ block content
     tr(style="visibility:hidden;")
      td
       input.form-control.poNum(type="text", size="8", name="id", value="#{post._id}", style="font-size: 13px;padding:0px; margin:0px;height:50px;text-align:center;")
- 
+   button.search.btn(type="submit", style="font-size:45px; margin-top: -25px;", onclick="return updateAlert();") Save
 
      
 
