@@ -334,40 +334,82 @@ router.post('/locateThree', function( req, res, next ){
 	console.log(req.body);
 	console.log(req.body.upc1);  //productupc11
 	console.log(req.body.quantity1); //qty11
+	console.log(req.body.location1);
 	var searchedUPC = req.body.upc1;
 					
-					var momentDate = Date.now(); 
-					var newMoment = moment(momentDate).format('YYYY-MM-DD HH:mm:ss');
-					console.log(newMoment);
+	var momentDate = Date.now(); 
+	var newMoment = moment(momentDate).format('YYYY-MM-DD HH:mm:ss');
+	console.log(newMoment);
 
-            		Locations.findOneAndUpdate({upc: req.body.upc1}, 
-            			{
-            				$inc: {quantity: req.body.quantity1},
-            				$set: {box: newMoment}
-            			}, 
-						{upsert: false}, 
-							function(err, docs) {
-								console.log(docs + 'HELLLLLLLLPPPPPPPPP!');
-		            			if (docs == null){
+					Locations.findOne({upc: req.body.upc1}, function(err, docs) {
+            				console.log(docs+ 'DOCCSSSSSSS')
+							if (docs === null){
+
+            				res.render('invalid', {message: req.body.upc1 + ' does not exist. Please add it!'});
+            				}
+					    	else { 
+								var newLocation = new Locations({
+								location   : req.body.location1,
+								upc        : req.body.upc1,
+								description: docs.description,
+								quantity   : req.body.quantity1,
+								box        : newMoment
+								});
+								console.log(newLocation);
+								newLocation.save(function(err, callback){
+									Locations.find({upc: req.body.upc1, location: req.body.location1}).exec(function(err,docs){
+										console.log( docs + ' good query');
+											res.render('editproduct', {success: req.body.upc1 + ' has been entered!', post:docs});
+
+									})
+								})
+            	
+							}
+					});
+
+});
+            	
+					
+
+
+
+
+
+
+
+
+
+
+
+
+     //        		Locations.findOneAndUpdate({upc: req.body.upc1}, 
+     //        			{
+     //        				$inc: {quantity: req.body.quantity1},
+     //        				$set: {box: newMoment}
+     //        			}, 
+					// 	{upsert: false}, 
+					// 		function(err, docs) {
+					// 			console.log(docs + 'HELLLLLLLLPPPPPPPPP!');
+		   //          			if (docs == null){
 		            				
-									res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it to the system!'});
+					// 				res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it to the system!'});
 									
-		            				//res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it before updating qty!'});
-		            			}
-							    else { 
-								            	console.log( docs + " Updated Document");
-								            	Locations.findOne({upc: docs.upc}).exec(function(err, docs){
-													console.log( docs + ' good query loc + PROD');
-													console.log(docs);
-													console.log(docs.quantity)
-													res.render('index-step-2', { success: 'NOTE: ' + docs.upc + ' has been updated to ' + docs.quantity, post:docs }); 
-												})
-								            	//res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs });    
-		            				}
+		   //          				//res.render('invalid', {message: req.body.upc1 + ' does not exist in the system. Please add it before updating qty!'});
+		   //          			}
+					// 		    else { 
+					// 			            	console.log( docs + " Updated Document");
+					// 			            	Locations.findOne({upc: docs.upc}).exec(function(err, docs){
+					// 								console.log( docs + ' good query loc + PROD');
+					// 								console.log(docs);
+					// 								console.log(docs.quantity)
+					// 								res.render('index-step-2', { success: 'NOTE: ' + docs.upc + ' has been updated to ' + docs.quantity, post:docs }); 
+					// 							})
+					// 			            	//res.render('index-step-2', { success: docs.upc + ' has been updated to ' + docs.quantity, post:docs });    
+		   //          				}
 	
 
-					});  
-});
+					// });  
+
 
 
 router.post('/updateStepTwo', function(req, res){
