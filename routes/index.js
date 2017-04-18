@@ -782,7 +782,7 @@ router.post('/excel', function(req, res, next) {
 
 // This is the search for multiple documents
 router.post('/queryMultiple', function(req,res,next){
-	
+
 	// Res.render downloadMultipleQuery
 
 	console.log(req.body.barcode);
@@ -795,13 +795,14 @@ router.post('/queryMultiple', function(req,res,next){
 	// console.log(globalLoc + ' this is the global location now');
 	//var val = "/" + req.body.barcode + "/";
 
-		Locations.find({upc: req.body.barcode}).exec(function(err,docs){
+		Locations.find({upc: {$regex: req.body.barcode, $options: "i"}}).exec(function(err,docs){
 		console.log( docs + ' good query!!!!!!');
 			if (docs == undefined) {
 				console.log("send user a message!!")
 			}
 			else {
 				console.log("testing!")
+				res.render('downloadMultipleQuery', {'nums':docs});
 			}
 			// res.render('query', {'nums':docs});
 		})
