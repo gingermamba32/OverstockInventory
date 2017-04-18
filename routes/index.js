@@ -783,39 +783,28 @@ router.post('/excel', function(req, res, next) {
 // This is the search for multiple documents
 router.post('/queryMultiple', function(req,res,next){
 	
+	// Res.render downloadMultipleQuery
 
 	console.log(req.body.barcode);
+	console.log(typeof req.body.barcode);
 
 	// globalUpc = req.body.barcode;
 	// globalLoc = req.body.location;
 
 	// console.log(globalUpc + 'THIS IS THE GLOBAL UPC'); 
 	// console.log(globalLoc + ' this is the global location now');
+	//var val = "/" + req.body.barcode + "/";
 
-	if (req.body.barcode != '' && req.body.location != ''){
-		Locations.find({upc: req.body.barcode, location: req.body.location}).sort({shipment: 1}).exec(function(err,docs){
-		console.log( docs + ' good query');
-			res.render('query', {'nums':docs});
+		Locations.find({upc: req.body.barcode}).exec(function(err,docs){
+		console.log( docs + ' good query!!!!!!');
+			if (docs == undefined) {
+				console.log("send user a message!!")
+			}
+			else {
+				console.log("testing!")
+			}
+			// res.render('query', {'nums':docs});
 		})
-	}	
-
-	else if (req.body.barcode != ''){
-    Locations.find({upc: req.body.barcode}).sort({shipment: 1}).exec(function(err, docs) {
-			console.log( docs + ' good query');
-				res.render('query', {'nums':docs});
-	 });
-	}
-
-	else if (req.body.location != '') {
-		Locations.find({location: req.body.location}).sort({shipment: 1}).exec(function(err, docs) {
-			console.log( docs + 'good query');
-				res.render('query', {'nums':docs});
-	 });
-	}
-
-	else if (req.body.qty == '' && req.body.location == '' && req.body.description == '' && req.body.barcode == ''){
-		res.render('search', {message: 'You have have not searched anything!'})
-	}	
 
 });
 
