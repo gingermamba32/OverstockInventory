@@ -13,12 +13,14 @@ block content
 
     if (nums.length)
      each post, i in nums
-      tr
-       td= post.upc
-       td= post.description
-       td= post.location
+      if (post.location != 'DoNotDelete')
+       tr
+        td= post.upc
+        td= post.description
+        td= post.location
 
-  button.search.btn(type="submit", style="font-size:15px;") Download Upcs
+  form(method="POST", action="/downloadcsv", name="downloadcsv")
+   button.search.btn(type="submit", style="font-size:15px;") Download Upcs
 
      
   //- #myModal.modal.fade(role='dialog')

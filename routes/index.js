@@ -786,7 +786,11 @@ router.post('/queryMultiple', function(req,res,next){
 	// Res.render downloadMultipleQuery
 
 	console.log(req.body.barcode);
-	console.log(typeof req.body.barcode);
+	console.log(typeof req.body.barcode); //string
+	//turn the string into an array
+	globalBarcodeArray = req.body.barcode.split(',');
+	console.log(globalBarcodeArray);
+
 
 	// globalUpc = req.body.barcode;
 	// globalLoc = req.body.location;
@@ -795,10 +799,10 @@ router.post('/queryMultiple', function(req,res,next){
 	// console.log(globalLoc + ' this is the global location now');
 	//var val = "/" + req.body.barcode + "/";
 
-		Locations.find({upc: {$regex: req.body.barcode, $options: "i"}}).exec(function(err,docs){
+		Locations.find({upc: {$in: globalBarcodeArray}}).exec(function(err,docs){
 		console.log( docs + ' good query!!!!!!');
-			if (docs == undefined) {
-				console.log("send user a message!!")
+			if (err) {
+				console.log(err);
 			}
 			else {
 				console.log("testing!")
@@ -808,6 +812,28 @@ router.post('/queryMultiple', function(req,res,next){
 		})
 
 });
+
+// Create the POST when the user clicks to download the csv file
+router.post('/downloadcsv', function(req,res,next){
+	console.log(globalBarcodeArray + ' Download Button');
+
+	Locations.find({upc: {$in: globalBarcodeArray}}).exec(function(err,docs){
+
+		//console.log( docs + ' good query!!!!!!');
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log("Made it to printing the csv file.");
+			
+			res.download(__dirname + '/../public/' + 'uploads/locations.csv');
+		}
+	})
+
+});
+
+
+
 
 // Add Radio Button to the search page
 // router.post('/radioAdd', function(req, res,next){
