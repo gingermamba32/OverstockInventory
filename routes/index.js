@@ -792,14 +792,6 @@ router.post('/queryMultiple', function(req,res,next){
 	globalBarcodeArray = req.body.barcode.split(',');
 	console.log(globalBarcodeArray);
 
-
-	// globalUpc = req.body.barcode;
-	// globalLoc = req.body.location;
-
-	// console.log(globalUpc + 'THIS IS THE GLOBAL UPC'); 
-	// console.log(globalLoc + ' this is the global location now');
-	//var val = "/" + req.body.barcode + "/";
-
 		Locations.find({upc: {$in: globalBarcodeArray}}).exec(function(err,docs){
 		console.log( docs + ' good query!!!!!!');
 			if (err) {
@@ -807,9 +799,34 @@ router.post('/queryMultiple', function(req,res,next){
 			}
 			else {
 				console.log("testing!")
+				var fields = ['upc', 'location', 'description'];
+				console.log(docs.length);
+
+				var myUpcs = [];
+				console.log(typeof myUpcs + ' this is the datatype!!!!!!');
+				console.log(myUpcs);
+				//myUpcs.push(docs);
+
+				for (var i = 0; i < docs.length; i++) {
+					if (docs[i].location != 'DoNotDelete')
+					myUpcs.push(docs[i]);
+				}
+
+				//console.log(typeof myUpcs + ' this is the datatype');
+				console.log(myUpcs + 'array of objects');
+				console.log(myUpcs.length);
+
+
+				// need an if location does not equal do not delete
+				var csv = json2csv({ data: myUpcs, fields: fields });
+	 
+				fs.writeFile('./public/uploads/upcdownload.csv', csv, function(err) {
+				  if (err) throw err;
+				  console.log('file saved');
+				});
+
 				res.render('downloadMultipleQuery', {'nums':docs});
 			}
-			// res.render('query', {'nums':docs});
 		})
 
 });
@@ -824,26 +841,25 @@ router.post('/downloadcsv', function(req,res,next){
 		}
 		else {
 			console.log("Made it to printing the csv file.");
-			console.log(docs + 'printing out docs globally');
 			var fields = ['upc', 'location', 'description'];
-			var myUpcs = [docs];
+			console.log(docs.length);
 
-			// var ws = fs.createWriteStream("./public/uploads/my.csv");
-			// 	csv
-			// 	   .write([
-			// 	       {a: "UPC", b: "LOCATION"},
-			// 	   ], {
-			// 	        headers: true,
-			// 	        transform: function(doc){
-			// 	        	console.log(doc);
-			// 	            return {
-			// 	                A: docs.upc,
-			// 	                B: docs.location
-			// 	            };
-			// 	        }
-			// 	   })
-			// 	   .pipe(ws);
+			var myUpcs = [];
+			console.log(typeof myUpcs + ' this is the datatype!!!!!!');
+			console.log(myUpcs);
+			//myUpcs.push(docs);
 
+			for (var i = 0; i < docs.length; i++) {
+				if (docs[i].location != 'DoNotDelete')
+				myUpcs.push(docs[i]);
+			}
+
+			//console.log(typeof myUpcs + ' this is the datatype');
+			console.log(myUpcs + 'array of objects');
+			console.log(myUpcs.length);
+
+
+			// need an if location does not equal do not delete
 			var csv = json2csv({ data: myUpcs, fields: fields });
  
 			fs.writeFile('file.csv', csv, function(err) {
@@ -853,7 +869,7 @@ router.post('/downloadcsv', function(req,res,next){
 
 
 
-			// res.download(__dirname + '/../public/' + 'uploads/locations.csv');
+			res.download(__dirname + '/../' + 'file.csv');
 		}
 	})
 
