@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var csv = require('fast-csv');
+var json2csv = require('json2csv');
 var fs = require('fs');
 var Busboy = require('busboy');
 var path = require('path');
@@ -818,15 +819,41 @@ router.post('/downloadcsv', function(req,res,next){
 	console.log(globalBarcodeArray + ' Download Button');
 
 	Locations.find({upc: {$in: globalBarcodeArray}}).exec(function(err,docs){
-
-		//console.log( docs + ' good query!!!!!!');
 		if (err) {
 			console.log(err);
 		}
 		else {
 			console.log("Made it to printing the csv file.");
-			
-			res.download(__dirname + '/../public/' + 'uploads/locations.csv');
+			console.log(docs + 'printing out docs globally');
+			var fields = ['upc', 'location', 'description'];
+			var myUpcs = [docs];
+
+			// var ws = fs.createWriteStream("./public/uploads/my.csv");
+			// 	csv
+			// 	   .write([
+			// 	       {a: "UPC", b: "LOCATION"},
+			// 	   ], {
+			// 	        headers: true,
+			// 	        transform: function(doc){
+			// 	        	console.log(doc);
+			// 	            return {
+			// 	                A: docs.upc,
+			// 	                B: docs.location
+			// 	            };
+			// 	        }
+			// 	   })
+			// 	   .pipe(ws);
+
+			var csv = json2csv({ data: myUpcs, fields: fields });
+ 
+			fs.writeFile('file.csv', csv, function(err) {
+			  if (err) throw err;
+			  console.log('file saved');
+			});
+
+
+
+			// res.download(__dirname + '/../public/' + 'uploads/locations.csv');
 		}
 	})
 
