@@ -9,6 +9,7 @@ block content
      td #[b UPC]
      td #[b DESCRIPTION]
      td #[b LOCATION]
+     td #[b QTY]
      
 
     if (nums.length)
@@ -18,10 +19,11 @@ block content
         td= post.upc
         td= post.description
         td= post.location
+        td= post.quantity
 
 
 
-  h5(style="text-align:center; color:black; padding-top: 70px;") Download your UPCs + Shelf Locations
+  h5(style="text-align:center; color:black; padding-top: 70px;") Download your UPCs
    ul(style="width:300px; margin:0 auto; padding-bottom: 70px;padding-top:10px;")
     li(style="font-size: 20px; color: black;")
      a(href="/uploads/upcdownload.csv" style="font-size: 20px;") CLICK HERE

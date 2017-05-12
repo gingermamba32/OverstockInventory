@@ -799,7 +799,7 @@ router.post('/queryMultiple', function(req,res,next){
 			}
 			else {
 				console.log("testing!")
-				var fields = ['upc', 'location', 'description'];
+				var fields = ['upc', 'location', 'description', 'quantity'];
 				console.log(docs.length);
 
 				var myUpcs = [];
