@@ -745,7 +745,7 @@ router.post('/excel', function(req, res, next) {
 	        	// ************************
 
 				var newLocation = new Locations ({
-							location   : 'FIRST ENTRY',
+							location   : 'DoNotDelete',
 							upc        : excel_upc,
 							description: excel_description,
 							quantity   : 0,
